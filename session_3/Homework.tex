@@ -1,0 +1,232 @@
+\documentclass[]{article}
+
+\usepackage[top=1in, bottom=1.25in, left=0.9in, right=0.9in]{geometry}
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large}
+  {\thesection}{1em}{}
+\usepackage{wallpaper}
+\ThisURCornerWallPaper{1.0}{img/cover.png}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\definecolor{blue}{rgb}{0.01, 0.28, 1.0}
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+\hypersetup{colorlinks=true, urlcolor=blue, citecolor=blue, filecolor=blue, linkcolor=blue}
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+	\vspace{0.5cm}
+ 	\huge{\@title}\vspace{0.5cm}\\
+	\quad\Large Homework (Session 3)\vspace{0.5cm}\\
+  	\qquad\large\textit{\@author}
+\end{flushleft}\egroup
+}
+\makeatother
+\newcommand{\fakesection}[1]{
+	\section*{#1}
+	\par\refstepcounter{section}
+	\addcontentsline{toc}{section}{#1}
+}
+\newcommand{\fakesubsection}[1]{
+	\subsection*{#1}
+	\par\refstepcounter{subsection}
+	\addcontentsline{toc}{subsection}{\protect\numberline{\thesubsection}#1}
+}
+\newcommand{\fakesubsubsection}[1]{
+	\subsubsection*{#1}
+	\par\refstepcounter{subsubsection}
+	\addcontentsline{toc}{subsubsection}{#1}
+}
+\newcommand{\parx}{\par\noindent}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{amssymb}
+
+\usepackage[cachedir=minted]{minted}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\def\session{3}
+\title{Category Theory for Programmers}
+\author{Bruno Vandekerkhove}
+\date{}
+\maketitle
+\vspace{0.5cm}
+
+\tableofcontents
+
+\fakesection{Definition of a Functor}
+
+A definition of functors from Mac Lane's book\cite{book:maclane} : 
+
+\begin{quote}
+A \textit{functor} is a morphism of categories. In detail, for categories $C$ and $B$ a functor $T:C\rightarrow B$ with codomain $C$ and codomain $B$ consists of two suitably related functions: The \textit{object function $T$}, which assigns to each object $c$ of $C$ an object $T c$ of $B$ and the \textit{arrow function} (also written $T$) which assigns to each arrow $f:c\rightarrow c'$ of $C$ an arrow $T f: T c\rightarrow T c'$ of $B$, in such a way that 
+$$T(1_c) = 1_{T c},\qquad T(g\circ f) = Tg\circ T f,$$
+the latter whenever the composite $g\circ f$ is defined in $C$.
+\end{quote}
+
+\parx The similarities are obvious. A functor is a mapping of both objects and their morphisms from one category to an other such that identity and composition (`the structure') are preserved. An interesting simplification is \textit{nLab}'s \textit{`a functor preserves commuting diagrams.'}\cite{web:ncatlab}. A commuting diagram is a diagram where any directed path from a given start to a given end point leads to the same results. Both identities and compositions correspond to such diagrams.\\
+
+\parx If we consider arrow-only categories (objects are represented by their identities) then an arrow-only definition of a functor follows.
+
+\fakesection{Challenges}
+
+\fakesubsection{Chapter 6}
+
+\fakesubsubsection{Isomorphism of \texttt{Maybe a} and \texttt{Either () a}}
+
+Isomorphism implies the existence of an invertible morphism, which in this case can be defined as follows :
+
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+func :: Maybe a -> Either () a
+func Nothing = Left ()
+func (Just x) = Right x
+
+func_inv :: Either () a -> Maybe a
+func_inv (Left ()) = Nothing
+func_inv (Right x) = Just x
+\end{minted}
+
+\fakesubsubsection{Circles and rectangles}
+
+Let's start from a base implementation :
+
+\begin{minted}[xleftmargin=20pt,linenos]{c++}
+#include <iostream>
+#include <math.h>
+
+class Shape {
+    virtual float area() = 0;
+};
+
+class Circle: public Shape {
+    float _radius;
+public:
+    Circle(float radius) { _radius = radius; }
+    float area() { return M_PI * _radius * _radius; }
+};
+
+class Rectangle: public Shape {
+    float _width, _height;
+public:
+    Rectangle(float width, float height) { _width = width; _height = height; }
+    float area() { return _width * _height; }
+};
+\end{minted}
+
+We can add an operation to calculate the circumference :
+
+\begin{minted}[xleftmargin=20pt,linenos]{c++}
+...
+
+class Shape {
+    virtual float area() = 0;
+    virtual float circ() = 0;
+};
+
+class Circle: public Shape {
+...
+    float circ() { return 2 * M_PI * _radius; }
+};
+
+class Rectangle: public Shape {
+...
+    float circ() { return 2 * (_width + _height); }
+};
+\end{minted}
+
+\noindent Clearly, a new virtual function had to be added to the \texttt{Shape} class and implementations had to be coded for each subtype. Finally, let's add a new type of shape, a square :
+
+\begin{minted}[xleftmargin=20pt,linenos]{c++}
+...
+
+class Square: public Shape {
+    float _width;
+public:
+    Square(float width) { _width = width; }
+    float area() { return _width * _width; }
+    float circ() { return 4 * _width; }
+};
+\end{minted}
+
+\noindent This time only some subtype \texttt{Square} had to be added and the virtual functions had to be implemented. In Haskell one could alter the definition of \texttt{Shape} and change each operation's implementation (adding a case for both \texttt{area} and \texttt{circ}).\\
+
+\parx This is a reference to the \textit{expression problem} ; in functional programming languages it's easier to add operations to existing data types, but it's more difficult to add new data types. The opposite holds for object-oriented languages, where the visitor pattern helps to turn the problem on its head but does not solve it.
+
+\fakesubsubsection{Show that \texttt{a + a = 2 $\times$ a}}
+
+We can simply substitute $1 + 1$ for $2$ and use the distributivity property :
+$$2\times a = (1 + 1)\times a = 1\times a + 1\times a = a + a$$
+Or in Haskell :
+
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+func :: Either a a -> (Bool, a)
+func (Left x) = (True, x)
+func (Right x) = (False, x)
+
+func_inv :: (Bool, a) -> Either a a
+func_inv (True, x) = Left x
+func_inv (False, x) = Right x
+\end{minted}
+
+\fakesubsection{Chapter 7}
+
+Proving the functor laws means that we have to show that \texttt{fmap} preserves identity and composition. When we ignore both arguments when lifting :
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+fmap _ _ = Nothing
+\end{minted}
+Then the identity function is not always preserved :
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+fmap id (Just x) = Nothing = id Nothing /= id (Just x)
+\end{minted}
+The laws do hold for the reader functor :
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+fmap id f = (.) id f = id f = f
+fmap (h . g) f = (h . g) . f =  h . (g . f) = h . (fmap g f) = fmap h (fmap g f)
+\end{minted}
+For the list functor they hold as well. We start with proving that identity is preserved :
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+fmap id Nil = Nil = id Nil
+fmap id (Cons x t) = Cons (id x) (fmap id t) = Cons x t
+\end{minted}
+The last line assumes that the law holds for the tail of the list. Composition is also preserved :
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
+fmap (f . g) Nil = Nil = fmap g Nil = fmap f (fmap g Nil)
+fmap (f . g) (Cons x t) 
+	= Cons ((f . g) x) (fmap (f . g) t) 
+	= Cons ((f . g) x) (fmap f (fmap g t))
+	= fmap f (Cons (g x) (fmap g t))
+	= fmap f (fmap g (Cons x t))
+\end{minted}
+
+\fakesubsubsection{Implementing the \texttt{Reader} functor}
+
+The \texttt{Reader} functor takes a mapping $a\rightarrow b$ and transforms it to a mapping $(r\rightarrow a)\rightarrow(r\rightarrow b)$. In Scala :
+\begin{minted}[xleftmargin=20pt,linenos]{scala}
+object Reader extends App {
+  print(new Reader[String].fmap((i: Int) => 10 + i)(s => s.toInt * 2)("10")) // 30
+}
+
+class Reader[R] extends Functor[({type Func[X] = (R => X)})#Func] {
+  override def fmap[A, B](f: A => B)(g: R => A): R => B = g andThen f
+}
+
+trait Functor[F[_]] {
+  def fmap[A, B](f: (A => B))(g: F[A]) : F[B]
+}
+\end{minted}
+
+
+\bibliographystyle{plain}
+\bibliography{References}
+\addcontentsline{toc}{section}{References}
+
+\end{document}

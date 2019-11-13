@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{...}
+
+\PYG{k}{class} \PYG{n+nc}{Square}\PYG{o}{:} \PYG{k}{public} \PYG{n}{Shape} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{float} \PYG{n}{\PYGZus{}width}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{Square}\PYG{p}{(}\PYG{k+kt}{float} \PYG{n}{width}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{n}{\PYGZus{}width} \PYG{o}{=} \PYG{n}{width}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{float} \PYG{n}{area}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{n}{\PYGZus{}width} \PYG{o}{*} \PYG{n}{\PYGZus{}width}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{float} \PYG{n}{circ}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{l+m+mi}{4} \PYG{o}{*} \PYG{n}{\PYGZus{}width}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

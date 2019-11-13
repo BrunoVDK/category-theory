@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{...}
+
+\PYG{k}{class} \PYG{n+nc}{Shape} \PYG{p}{\PYGZob{}}
+    \PYG{k}{virtual} \PYG{k+kt}{float} \PYG{n}{area}\PYG{p}{()} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{virtual} \PYG{k+kt}{float} \PYG{n+nf}{circ}\PYG{p}{()} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{class} \PYG{n+nc}{Circle}\PYG{o}{:} \PYG{k}{public} \PYG{n}{Shape} \PYG{p}{\PYGZob{}}
+\PYG{p}{...}
+    \PYG{k+kt}{float} \PYG{n}{circ}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{M\PYGZus{}PI} \PYG{o}{*} \PYG{n}{\PYGZus{}radius}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{class} \PYG{n+nc}{Rectangle}\PYG{o}{:} \PYG{k}{public} \PYG{n}{Shape} \PYG{p}{\PYGZob{}}
+\PYG{p}{...}
+    \PYG{k+kt}{float} \PYG{n}{circ}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{p}{(}\PYG{n}{\PYGZus{}width} \PYG{o}{+} \PYG{n}{\PYGZus{}height}\PYG{p}{);} \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

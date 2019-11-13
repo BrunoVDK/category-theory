@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{func} \PYG{o+ow}{::} \PYG{k+kt}{Maybe} \PYG{n}{a} \PYG{o+ow}{\PYGZhy{}\PYGZgt{}} \PYG{k+kt}{Either} \PYG{n+nb}{()} \PYG{n}{a}
+\PYG{n+nf}{func} \PYG{k+kt}{Nothing} \PYG{o+ow}{=} \PYG{k+kt}{Left} \PYG{n+nb}{()}
+\PYG{n+nf}{func} \PYG{p}{(}\PYG{k+kt}{Just} \PYG{n}{x}\PYG{p}{)} \PYG{o+ow}{=} \PYG{k+kt}{Right} \PYG{n}{x}
+
+\PYG{n+nf}{func\PYGZus{}inv} \PYG{o+ow}{::} \PYG{k+kt}{Either} \PYG{n+nb}{()} \PYG{n}{a} \PYG{o+ow}{\PYGZhy{}\PYGZgt{}} \PYG{k+kt}{Maybe} \PYG{n}{a}
+\PYG{n+nf}{func\PYGZus{}inv} \PYG{p}{(}\PYG{k+kt}{Left} \PYG{n+nb}{()}\PYG{p}{)} \PYG{o+ow}{=} \PYG{k+kt}{Nothing}
+\PYG{n+nf}{func\PYGZus{}inv} \PYG{p}{(}\PYG{k+kt}{Right} \PYG{n}{x}\PYG{p}{)} \PYG{o+ow}{=} \PYG{k+kt}{Just} \PYG{n}{x}
+\end{Verbatim}

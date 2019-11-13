@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{fmap} \PYG{n}{id} \PYG{k+kt}{Nil} \PYG{o+ow}{=} \PYG{k+kt}{Nil} \PYG{o+ow}{=} \PYG{n}{id} \PYG{k+kt}{Nil}
+\PYG{n+nf}{fmap} \PYG{n}{id} \PYG{p}{(}\PYG{k+kt}{Cons} \PYG{n}{x} \PYG{n}{t}\PYG{p}{)} \PYG{o+ow}{=} \PYG{k+kt}{Cons} \PYG{p}{(}\PYG{n}{id} \PYG{n}{x}\PYG{p}{)} \PYG{p}{(}\PYG{n}{fmap} \PYG{n}{id} \PYG{n}{t}\PYG{p}{)} \PYG{o+ow}{=} \PYG{k+kt}{Cons} \PYG{n}{x} \PYG{n}{t}
+\end{Verbatim}

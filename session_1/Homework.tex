@@ -1,0 +1,273 @@
+\documentclass[]{article}
+
+\usepackage[top=1in, bottom=1.25in, left=0.9in, right=0.9in]{geometry}
+\usepackage{titlesec}
+\titleformat{\section}
+  {\normalfont\Large}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large}
+  {\thesection}{1em}{}
+\usepackage{wallpaper}
+\ThisURCornerWallPaper{1.0}{img/cover.png}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\definecolor{blue}{rgb}{0.01, 0.28, 1.0}
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+\hypersetup{colorlinks=true, urlcolor=blue, citecolor=blue, filecolor=blue, linkcolor=blue}
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+	\vspace{0.5cm}
+ 	\huge{\@title}\vspace{0.5cm}\\
+	\quad\Large Homework (Session 1)\vspace{0.5cm}\\
+  	\qquad\large\textit{\@author}
+\end{flushleft}\egroup
+}
+\makeatother
+\newcommand{\fakesection}[1]{
+	\section*{#1}
+	\par\refstepcounter{section}
+	\addcontentsline{toc}{section}{#1}
+}
+\newcommand{\fakesubsection}[1]{
+	\subsection*{#1}
+	\par\refstepcounter{subsection}
+	\addcontentsline{toc}{subsection}{\protect\numberline{\thesubsection}#1}
+}
+\newcommand{\parx}{\par\noindent}
+\usepackage{tikz}
+\usepackage{listings}
+
+
+\begin{document}
+
+\title{Category Theory for Programmers}
+\author{Bruno Vandekerkhove}
+\date{}
+\maketitle
+\vspace{0.5cm}
+
+\tableofcontents
+
+\fakesection{Definition of a Category}
+
+\fakesubsection{Formal Definition}
+
+Milewski summarises his informal definition of a category as follows :
+
+\begin{center}\textit{A category consists of objects and arrows (morphisms). Arrows can be composed, and the composition is associative. Every object has an identity arrow that serves as a unit under composition.}\end{center}
+
+\noindent Let's compare the statement with the original definition of Mac Lane and his colleague Eilenberg \cite{book:original, web:stanford}: 
+\\\parx A category $C=\{A,\alpha\}$ is an aggregate of abstract elements $A$ called the \textit{objects} of the category, and abstract elements $\alpha$, called \textit{mappings} of the category. Certain pairs of mappings $\alpha_1,\alpha_2$ uniquely determine a product mapping $\alpha_1\alpha_2$ subject to the first three axioms listed below. Each object $A$ is associated with a unique mapping $e_A$ for which axioms 4-5 have to hold.
+\begin{enumerate}
+\item The triple product $\alpha_3(\alpha_2\alpha_1)$ is defined if and only if $(\alpha_3\alpha_2)\alpha_1$ is defined. When either is defined, the associative law $\alpha_3(\alpha_2\alpha_1)=(\alpha_3\alpha_2)\alpha_1$ holds. This triple product will be written as $\alpha_3\alpha_2\alpha_1$.
+\item The triple product $\alpha_3\alpha_2\alpha_1$ is defined whenever both products $\alpha_3\alpha_2$ and $\alpha_2\alpha_1$ are defined.
+\item[] \textit{Definition} : A mapping $e\in C$ will be called an \textit{identity} of $C$ if and only if the existence of any product $e\alpha$ or $\beta e$ implies that $e\alpha = \alpha$ and $\beta e=\beta$.
+\item For each mapping $a\in C$ there is at least one identity $e_1\in C$ such that $\alpha e_1$ is defined, and at least one identity $e_2\in C$ such that $e_2\alpha$ is defined.
+\item The mapping $e_A$ corresponding to each object $A$ is an identity.
+\item For each identity $e$ of $C$ there is a unique object $A$ of $C$ such that $e_A$ = e.
+\end{enumerate}
+
+\fakesubsection{Comparison}
+
+\noindent Aside from the naming, the definition also differs in that it is more abstract. The first of the axioms corresponds to associativity of the composition function. The fact that mappings can be composed if the range of one mapping is equal to the domain of the other is stated by a lemma that follows from the axioms. The fact that each object is associated with just one identity follows from axiom 3-5.\\
+
+\parx A few decades after the formal definition given here, Mac Lane published a book in which an other definition is given \cite{book:maclane}. There he starts by defining a (meta)graph, builds on that to define metacategories (for which he does use the term morphism for denoting the arrows). Finally he introduces the term category as an interpretation of the axioms of a metacategory within set theory. Because a category is defined as a special kind of directed graph, this automatically answers the last challenge of chapter 1. Bartosz mentions the book in his foreword making it likely that he based his informal definition on this one. \\
+
+\parx In both of Mac Lane's referenced works he points out that since there's a one-to-one correspondence between objects and identities, one could disregard objects altogether and deal with arrows (morphisms or mappings) only. The resulting axioms are equivalent.
+
+%\fakesubsection{Alternative Definitions}
+%
+%There's an alternative definition by Lambek, who defines a category as a deductive system \cite{web:stanford}. Such a system is a graph which consists of objects (called \textit{formulas}) and arrows (\textit{proofs} or \textit{deductions}). Operations on arrows are called \textit{rules of inference}. The category, then, is a deductive system where for all $f:X\rightarrow Y$, $g:Y\rightarrow Z$ and $h:Z\rightarrow W$ associativity and the unit law hold.
+
+\fakesection{Challenges}
+
+\fakesubsection{Memoization}
+
+In \texttt{C} macros can be used to define memoized functions, but things quickly get complicated, so I limit myself to functions with one integer argument :
+
+\lstdefinestyle{base}{
+  language=C,
+  emptylines=1,
+  breaklines=true,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{red}]{@}{@},
+}
+
+\begin{lstlisting}[frame=single,style=base]
+#include <stdio.h>
+
+#define MEMOIZE(return_type, function, argument)                    \
+    return_type function_internal(int argument);                    \
+    return_type function(int argument) {                            \
+        static return_type *results[50];                            \
+        if (results[argument] != NULL)                              \
+            return *results[argument];                              \
+        results[argument] = malloc(sizeof(return_type));            \
+        *results[argument] = function_internal(argument);           \
+        return *results[argument];                                  \
+    }                                                               \
+    return_type function_internal(argument)
+
+int fib(int n) {
+    return (n <= 2 ? 1 : fib(n-2) + fib(n-1));
+}
+
+MEMOIZE(int, memoized_fib, n) {
+    return (n <= 2 ? 1 : memoized_fib(n-2) + memoized_fib(n-1));
+}
+
+int main(int argc, const char * argv[]) {
+    printf("Hello, World!\n");
+    printf("%i\n", fib(45));
+    printf("%i\n", memoized_fib(45));
+    return 0;
+}
+\end{lstlisting}
+
+\noindent In languages that provide generics and higher-order functions it's easier to do it (here in Swift, not the preferred language for this) :
+
+\begin{lstlisting}[frame=single]
+
+func memoize<I:Hashable,O>(_ function: @escaping ((I) -> O, I) -> O) -> (I) -> O {
+    var map = Dictionary<I,O>()
+    func internal_function(input: I) -> O {
+        if  let value = map[input] {
+            return value
+        }
+        let result = function(internal_function, input)
+        map[input] = result
+        return result
+    }
+    return internal_function
+}
+
+func fib(_ n: Int) -> Int {
+    return (n <= 2 ? 1 : fib(n-1) + fib(n-2))
+}
+
+let memoized_fib = memoize {
+    memoized_fib, n in
+    return (n <= 2 ? 1 : memoized_fib(n-1) + memoized_fib(n-2))
+}
+
+print(fib(25)) // 75025, slow
+print(memoized_fib(25)) // 75025, fast
+
+import Foundation
+
+func random(_ seeded: Bool) -> Double {
+    if  seeded {
+        srand48(0)
+    }
+    return drand48()
+}
+
+print(random(false)) // 0.39646477376027534
+print(memoize { _, x in return random(x) }(false)) // 0.8404853694114252
+print(random(true)) // 0.17082803610628972
+print(memoize { _, x in return random(x) }(true)) // 0.17082803610628972
+\end{lstlisting}
+
+\noindent Memoizing a random number generator doesn't work because such a generator is a dirty function (its output varies when the input value doesn't). Making use of a seed which is the basis of the random number generation results in a pure function, for which memoization \textit{does} work.
+
+\fakesubsection{Pure Functions}
+
+The factorial function produces no side effects and returns the same output for a given output at all times. \texttt{std::getchar} will return a different output depending on the user's behaviour. \texttt{std::cout} prints to the screen which is a side effect. Finally, the use of a static variable means that memory shared between function calls is altered (which is a side effect) and the output happens to depend on the value of the very variable, not just on the input. 
+\parx In other words, only the factorial function is pure.
+
+\fakesubsection{Void, Unit \& Bool}
+
+The category with objects $Void$, $Unit$ and $Bool$ could be displayed as follows :
+
+\begin{center}
+\begin{tikzpicture}
+%\begin{scope}[yscale=1,xscale=-1]
+	\node at (0,8) (1) {\textbf{Void}};
+	\node at (2.5,5) (2) {\textbf{()}};
+	\node at (-2.5,5) (3) {\textbf{Bool}};
+	\draw [->] (1.south) -- (2.north) node[midway,right] {$absurd$};
+	\draw [->] (1.south) -- (3.north) node[midway,left] {$absurd$};
+	\draw[->,shorten >=1pt] (1) to [out=90,in=180,loop,looseness=4.8] node[left]{$absurd$} (1);
+	\draw[->,shorten >=1pt] (2) to [out=-90,in=0,loop,looseness=4.8] node[right]{$id$} (2);
+	\draw[->,shorten >=1pt] (3) to [out=180,in=-90,loop,looseness=4.8] node[left]{$id$} (3);
+	\draw[->,shorten >=1pt] (3) to [out=180,in=-90,loop,looseness=10] node[left]{$not$} (3);
+	\draw[->,shorten >=1pt] (3) to [out=180,in=-90,loop,looseness=15] node[left]{$true$} (3);
+	\draw[->,shorten >=1pt] (3) to [out=180,in=-90,loop,looseness=20] node[left]{$false$} (3);
+	\draw [->] ([yshift=2mm] 2.west) -- ([yshift=2mm] 3.east) node[midway,above] {$true$};
+	\draw [->] ([yshift=0mm] 2.west) -- ([yshift=0mm] 3.east) node[midway,below] {$false$};
+	\draw[->,shorten >=1pt] ([xshift=1mm] 3.south) to [out=-30,in=-145,loop,looseness=0.5] node[below]{$const$} ([xshift=-1mm] 2.south);
+%\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\noindent\textbf{Void} \href{https://stackoverflow.com/questions/38553622/inverse-of-the-absurd-function}{cannot be returned by any function}. It is an initial object so there's only one morphism from \textbf{Void} to every object.
+\noindent\textbf{Unit} is a terminal object so there's exactly one morphism for every object that points to it.\\ 
+
+\parx The Haskell types include the bottom $\bot$ (even \textbf{Void}), and the corresponding functions are missing from the diagram. For example, there are 27 functions going from \textbf{Bool} to \textbf{Bool}, one for every combination of input and output values).\\
+
+\parx A function from bottom to something else cannot be implemented in Haskell, and the absurd function cannot be called. You can return the bottom with $undefined$.\\
+
+\parx \textit{The above statements are wrong ; Haskell has 11 functions from \texttt{Bool} to \texttt{Bool}. You can call a function with bottom, e. g. the function that always returns \texttt{True}.}
+
+%
+% Appendix
+%
+%\appendix
+%\section*{Appendix}
+%\label{sec:appendix}
+%\addcontentsline{toc}{section}{Appendix}
+%
+%\noindent In \textit{Categories for the Working Mathematician} \cite{book:maclane}, Saunders starts by defining directed graphs, which have a set of arrows and a set of objects and two functions mapping from arrows to (co)domains :
+%\begin{center}
+%\begin{tikzpicture}
+%	\node at (0,0) (1) {\textbf{A}};
+%	\node at (2,0) (2) {\textbf{O}};
+%	\draw [->] ([yshift=1mm] 1.east) -- ([yshift=1mm] 2.west) node[midway,above] {\footnotesize domain};
+%	\draw [->] ([yshift=-1mm] 1.east) -- ([yshift=-1mm] 2.west) node[midway,below] {\footnotesize codomain};
+%\end{tikzpicture}
+%\end{center}
+%Say the \textit{set of composable arrows} is given by :
+%$$A\times_O A = \{<g, f>\ |\ g, f \in A\ \textrm{and}\ domain(g) = codomain(f)\}$$
+%Then a \textit{category} is a directed graph with two functions :
+%\begin{center}
+%\begin{tikzpicture}
+%	\node at (-1,0) (1) {\textbf{O}};
+%	\node at (0.5,0) (2) {\textbf{A}};
+%	\draw [->] (1.east) -- (2.west) node[midway,above] {\footnotesize id};
+%	\node at (3,0) (3) {\textbf{$A\times_O A$}};
+%	\node at (5.5,0) (4) {\textbf{A}};
+%	\draw [->] (3.east) -- (4.west) node[midway,above] {$\circ$};
+%\end{tikzpicture}\\
+%\begin{tikzpicture}
+%	\node at (1.5,0) (1) {$c$};
+%	\node at (2.5,0) (2) {$id_c$};
+%	\draw [->] (1.east) -- (2.west);
+%	\node at (5.5,0) (3) {$<g,f>$};
+%	\node at (7,0) (4) {$g\circ f$};
+%	\draw [->] (3.east) -- (4.west) node[midway,above] {$\circ$};
+%\end{tikzpicture}
+%\end{center}
+%such that for all objects $a\in O$ and composable pairs $<g,f>$ :
+%$$domain(id\ a)=a=codomain(id\ a)\ \quad\ domain(g\circ f)=domain(f)\ \quad\ codomain(g\circ f)=codomain(g)$$
+%These functions are called \textit{composition} and \textit{identity}. The composition has to be associative, and the identity operation should obey the unit law :
+%$$k\circ(g\circ f)=(k\circ g)\circ f\qquad\qquad(\textit{associativity})$$
+%$$1_b\circ f = f\qquad g\circ 1_b = g\qquad\qquad(\textit{unit law})$$
+%Since objects can be defined by their identity operator, Mac Lane notes that we can - equivalently - disregard objects altogether and deal with the arrows only.\\
+%
+%\parx This definition answers the last challenge of chapter 1 (by stating what requirements are to be met to consider a given directed graph a category) and is strikingly similar to the informal definition given by Bartosz Milewski. Mac Lane calls the arrows morphisms as well, at least in the context of his definition of \textit{metacategories}, an axiomatic description of categories that does not make use of set theory.
+%\\ The other ingredients such as associativity and composability are clearly there, too.
+
+% Vragen :
+% Waarom kan Void niet teruggegeven worden?
+
+% 
+% References
+%
+\bibliographystyle{plain}
+\bibliography{References}
+\addcontentsline{toc}{section}{References}
+
+\end{document}

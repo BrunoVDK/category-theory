@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{fmap} \PYG{n}{id} \PYG{n}{f} \PYG{o+ow}{=} \PYG{p}{(}\PYG{o}{.}\PYG{p}{)} \PYG{n}{id} \PYG{n}{f} \PYG{o+ow}{=} \PYG{n}{id} \PYG{n}{f} \PYG{o+ow}{=} \PYG{n}{f}
+\PYG{n+nf}{fmap} \PYG{p}{(}\PYG{n}{h} \PYG{o}{.} \PYG{n}{g}\PYG{p}{)} \PYG{n}{f} \PYG{o+ow}{=} \PYG{p}{(}\PYG{n}{h} \PYG{o}{.} \PYG{n}{g}\PYG{p}{)} \PYG{o}{.} \PYG{n}{f} \PYG{o+ow}{=}  \PYG{n}{h} \PYG{o}{.} \PYG{p}{(}\PYG{n}{g} \PYG{o}{.} \PYG{n}{f}\PYG{p}{)} \PYG{o+ow}{=} \PYG{n}{h} \PYG{o}{.} \PYG{p}{(}\PYG{n}{fmap} \PYG{n}{g} \PYG{n}{f}\PYG{p}{)} \PYG{o+ow}{=} \PYG{n}{fmap} \PYG{n}{h} \PYG{p}{(}\PYG{n}{fmap} \PYG{n}{g} \PYG{n}{f}\PYG{p}{)}
+\end{Verbatim}

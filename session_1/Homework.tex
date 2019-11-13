@@ -202,11 +202,9 @@ The category with objects $Void$, $Unit$ and $Bool$ could be displayed as follow
 \noindent\textbf{Void} \href{https://stackoverflow.com/questions/38553622/inverse-of-the-absurd-function}{cannot be returned by any function}. It is an initial object so there's only one morphism from \textbf{Void} to every object.
 \noindent\textbf{Unit} is a terminal object so there's exactly one morphism for every object that points to it.\\ 
 
-\parx The Haskell types include the bottom $\bot$ (even \textbf{Void}), and the corresponding functions are missing from the diagram. For example, there are 27 functions going from \textbf{Bool} to \textbf{Bool}, one for every combination of input and output values).\\
+\parx The Haskell types include the bottom $\bot$ (even \textbf{Void}), and the corresponding functions are missing from the diagram. For example, there are 11 functions going from \textbf{Bool} to \textbf{Bool} (you cannot pattern match the bottom but the \texttt{True} and \texttt{False} functions may take it as an argument.\\
 
-\parx A function from bottom to something else cannot be implemented in Haskell, and the absurd function cannot be called. You can return the bottom with $undefined$.\\
-
-\parx \textit{The above statements are wrong ; Haskell has 11 functions from \texttt{Bool} to \texttt{Bool}. You can call a function with bottom, e. g. the function that always returns \texttt{True}.}
+\parx The absurd function cannot be called. You can return the bottom with $undefined$.
 
 %
 % Appendix

@@ -1,4 +1,4 @@
-Some solutions for [Bartosz Milewski's book](/Category%20Theory%20for%20Programmers%20(Bartosz%20Milewski).pdf).
+Some solutions of the challenges in [Bartosz Milewski's book](/Category%20Theory%20for%20Programmers%20(Bartosz%20Milewski).pdf).
 
 # Sessions
 

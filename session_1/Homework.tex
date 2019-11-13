@@ -38,7 +38,7 @@
 }
 \newcommand{\parx}{\par\noindent}
 \usepackage{tikz}
-\usepackage{listings}
+\usepackage[cachedir=minted]{minted}
 
 
 \begin{document}
@@ -88,15 +88,7 @@ Milewski summarises his informal definition of a category as follows :
 
 In \texttt{C} macros can be used to define memoized functions, but things quickly get complicated, so I limit myself to functions with one integer argument :
 
-\lstdefinestyle{base}{
-  language=C,
-  emptylines=1,
-  breaklines=true,
-  basicstyle=\ttfamily\color{black},
-  moredelim=**[is][\color{red}]{@}{@},
-}
-
-\begin{lstlisting}[frame=single,style=base]
+\begin{minted}[xleftmargin=20pt,linenos]{C}
 #include <stdio.h>
 
 #define MEMOIZE(return_type, function, argument)                    \
@@ -125,15 +117,15 @@ int main(int argc, const char * argv[]) {
     printf("%i\n", memoized_fib(45));
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 \noindent In languages that provide generics and higher-order functions it's easier to do it (here in Swift, not the preferred language for this) :
 
-\begin{lstlisting}[frame=single]
-
+\begin{minted}[xleftmargin=20pt,linenos]{Swift}
 func memoize<I:Hashable,O>(_ function: @escaping ((I) -> O, I) -> O) -> (I) -> O {
     var map = Dictionary<I,O>()
     func internal_function(input: I) -> O {
+        print(map)
         if  let value = map[input] {
             return value
         }
@@ -165,11 +157,15 @@ func random(_ seeded: Bool) -> Double {
     return drand48()
 }
 
-print(random(false)) // 0.39646477376027534
-print(memoize { _, x in return random(x) }(false)) // 0.8404853694114252
+let memoized_rand = memoize { _, flag in return random(flag) }
+memoized_rand(true)
+memoized_rand(false) // 0.8404853694114252
+
+print(random(false)) // 0.09637165562356742
+print(memoized_rand(false)) // 0.8404853694114252
 print(random(true)) // 0.17082803610628972
-print(memoize { _, x in return random(x) }(true)) // 0.17082803610628972
-\end{lstlisting}
+print(memoized_rand(true)) // 0.17082803610628972
+\end{minted}
 
 \noindent Memoizing a random number generator doesn't work because such a generator is a dirty function (its output varies when the input value doesn't). Making use of a seed which is the basis of the random number generation results in a pure function, for which memoization \textit{does} work.
 

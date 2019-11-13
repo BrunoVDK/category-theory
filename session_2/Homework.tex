@@ -46,6 +46,8 @@
 \usepackage{listings}
 \usepackage{amssymb}
 
+\usepackage[cachedir=minted]{minted}
+
 \begin{document}
 
 \title{Category Theory for Programmers}
@@ -66,15 +68,7 @@ For a set of sets with an \textit{inclusion} relation it holds that $A\leq B, B\
 
 \parx In \texttt{C++} you can use template functions to define functions that take a pointer to any type. A template function \texttt{min} that takes two pointers to scalar types, for example. You could pass that function a pointer to an \texttt{int} or a \texttt{long}, the compiler won't complain.
 
-\lstdefinestyle{base}{
-  language=C,
-  emptylines=1,
-  breaklines=true,
-  basicstyle=\ttfamily\color{black},
-  moredelim=**[is][\color{red}]{@}{@},
-}
-
-\begin{lstlisting}[frame=single,style=base]
+\begin{minted}[xleftmargin=20pt,linenos]{C}
 #include <iostream>
 
 template <class T, class U>
@@ -88,7 +82,7 @@ int main(int argc, const char * argv[]) {
     printf("%i", (int)min(&a, &b));
     return 0;
 }
-\end{lstlisting}
+\end{minted}
 
 This does not work in general ; because of the strong typing system, any function that explicitly asks for a pointer to an \texttt{int} will not accept a pointer to a \texttt{long} unless you typecast. \texttt{void} is one exception. If you consider \texttt{void} a type, then any other type is one of its subtypes. Inheritance also makes it possible to substitute one type for another, presuming that the substituted class is a parent class and its substitute one of its subclasses (or subtypes). But in no case can you go the other way around ; you cannot hand a pointer to \texttt{void} to a function expecting a pointer to an \texttt{int}, for example. \\
 
@@ -125,7 +119,7 @@ Below you can find an implementation in Haskell.
 
 \newpage
 
-\begin{lstlisting}[frame=single,style=base]
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
 data Optional a = Valid a | Invalid deriving Show
 
 (>=>) :: (a -> Optional b) -> (b -> Optional c) -> (a -> Optional c)
@@ -137,13 +131,13 @@ data Optional a = Valid a | Invalid deriving Show
 
 return :: a -> Optional a
 return x = Valid x
-\end{lstlisting}
+\end{minted}
 
 \fakesubsubsection{Composition}
 
 In the implementation hereafter, calling \texttt{safe\_root\_reciprocal} will result in an \texttt{Invalid} value if the input argument is either negative or equal to zero.
 
-\begin{lstlisting}[frame=single,style=base]
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
 safe_root :: Double -> Optional Double
 safe_root x = if (x >= 0) then Valid (sqrt(x)) else Invalid
 
@@ -151,7 +145,7 @@ safe_reciprocal :: Double -> Optional Double
 safe_reciprocal x = if (x /= 0) then Valid (1/x) else Invalid
 
 safe_root_reciprocal = safe_reciprocal >=> safe_root
-\end{lstlisting}
+\end{minted}
 
 \fakesubsection{Chapter 5}
 
@@ -197,7 +191,7 @@ Then by the definition of a product there must be a unique morphism from $C'$ to
 
 It's easy to use Milewski's own factoriser function to show that you can factorise the injections to \texttt{int} :
 
-\begin{lstlisting}[frame=single,style=base]
+\begin{minted}[xleftmargin=20pt,linenos]{haskell}
 -- Create factorizer
 
 i :: Int -> Int
@@ -216,7 +210,7 @@ m = factorizer i j
 -- m (Left 1) --> 1
 -- m (Right True) --> 1
 -- m (Right False) --> 0
-\end{lstlisting}
+\end{minted}
 
 \noindent Because of the existence of such a factoriser it's clear that \texttt{Either} is a better coproduct. You cannot do the same the other way round, because 0 and 1 represent both integers and booleans (you can't factorise). I'd argue that since \texttt{int} has limited range, adding 2 to positive integers wouldn't solve this problem ; it may lead to an overflow so the injections aren't actually functions.
 

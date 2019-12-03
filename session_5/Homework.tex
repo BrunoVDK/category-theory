@@ -73,18 +73,18 @@ We talked about products and co-products in posets before, where the term suprem
 	\node at (0,6) (4) {$D$};
 	\node at (2,4) (2) {$C$};
 	\node at (-2,4) (3) {$B$};
-	\node at (0,2) (5) {$A$};
+	\node at (0,4) (5) {$A$};
 	\draw [<-] ([xshift=1mm]4.south) -- ([xshift=-2mm]2.north) node[midway,right] {$$};
 	\draw [<-] ([xshift=-1mm]4.south) -- ([xshift=2mm]3.north) node[midway,left] {$$};
 	\draw [<-] ([xshift=1mm]1.south) -- (2.north) node[midway,right] {$$};
 	\draw [<-] ([xshift=-1mm]1.south) -- (3.north) node[midway,left] {$$};
-	\draw [<-] ([xshift=2mm]3.south) -- ([xshift=-1mm]5.north) node[midway,right] {$$};
-	\draw [<-] ([xshift=-2mm]2.south) -- ([xshift=1mm]5.north) node[midway,left] {$$};
+	\draw [<-] ([xshift=2mm]3.east) -- ([xshift=-1mm]5.west) node[midway,right] {$$};
+	\draw [<-] ([xshift=-2mm]2.west) -- ([xshift=1mm]5.east) node[midway,left] {$$};
 %\end{scope}
 \end{tikzpicture}
 \end{center}
 
-\noindent Any superclass $E$ of $B$ and $C$ is a superclass of $D$. Which means that $D$ corresponds to a strict superclass, one that encompasses all the functionality that the subclasses have in common\footnote{One has to consider all possible superclasses of $B$ and $C$. Then $D$ inherits from all of those. Some superclasses may only declare a part of the functionality that's present in both the classes $B$ and $C$, yet together they declare all of it and nothing more or some wouldn't be superclasses.}.
+\noindent Any superclass $E$ of $B$ and $C$ is a superclass of $D$. Which means that $D$ corresponds to a superclass that encompasses all the functionality that the subclasses have in common\footnote{One has to consider all possible superclasses of $B$ and $C$. Then $D$ inherits from all of those. Some superclasses may only declare a part of the functionality that's present in both the classes $B$ and $C$, yet together they declare all of it and nothing more or some wouldn't be superclasses.}.
 
 \fakesection{Limit of the identity functor}
 
@@ -92,19 +92,41 @@ The identity functor \texttt{Id} maps a category to itself. The initial object i
 
 \fakesection{Pullback, pushout, ... in \texttt{Set}}
 
+Starting from the diagram depicted on the previous page and applying analogous reasoning we can see that $D$ is the smallest superset of both $B$ and $C$. In the opposite category we get :
 
+\begin{center}
+\begin{tikzpicture}
+%\begin{scope}[yscale=1,xscale=-1]
+	\node at (0,8) (1) {$E$};
+	\node at (0,6) (4) {$D$};
+	\node at (2,4) (2) {$C$};
+	\node at (-2,4) (3) {$B$};
+	\node at (0,4) (5) {$A$};
+	\draw [->] ([xshift=1mm]4.south) -- ([xshift=-2mm]2.north) node[midway,right] {$$};
+	\draw [->] ([xshift=-1mm]4.south) -- ([xshift=2mm]3.north) node[midway,left] {$$};
+	\draw [->] ([xshift=1mm]1.south) -- (2.north) node[midway,right] {$$};
+	\draw [->] ([xshift=-1mm]1.south) -- (3.north) node[midway,left] {$$};
+	\draw [->] ([xshift=2mm]3.east) -- ([xshift=-1mm]5.west) node[midway,right] {$$};
+	\draw [->] ([xshift=-2mm]2.west) -- ([xshift=1mm]5.east) node[midway,left] {$$};
+%\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\noindent Here, $D$ is the largest subset (every other set that's a subset of $B$ and $C$ ought to be a subset of $D$). A trellis visualises this and the terms supremum and infimum are in order.\\
+
+\par\noindent As for the initial - and terminal object, they (trivially) correspond to the empty set and the set on which the category is based.
 
 \fakesection{Coequalizer}
 
-
+can you guess what coequalizer is?
 
 \fakesection{Pullback towards terminal object}
 
-
+should be product (prove)
 
 \fakesection{Pushout from initial object}
 
-
+should be coproduct (prove)
 
 %\bibliographystyle{plain}
 %\bibliography{References}

@@ -92,7 +92,7 @@ The identity functor \texttt{Id} maps a category to itself. The initial object i
 
 \fakesection{Pullback, pushout, ... in \texttt{Set}}
 
-Starting from the diagram depicted on the previous page and applying analogous reasoning we can see that $D$ is the smallest superset of both $B$ and $C$. In the opposite category we get :
+Starting from the diagram depicted on the previous page and applying analogous reasoning we can see that $D$ is the smallest superset or the union of $B$ and $C$. In the opposite category we get :
 
 \begin{center}
 \begin{tikzpicture}
@@ -112,13 +112,33 @@ Starting from the diagram depicted on the previous page and applying analogous r
 \end{tikzpicture}
 \end{center}
 
-\noindent Here, $D$ is the largest subset (every other set that's a subset of $B$ and $C$ ought to be a subset of $D$). A trellis visualises this and the terms supremum and infimum are in order.\\
+\noindent Here, the pullback $D$ is the largest subset or the intersection (every other set that's a subset of $B$ and $C$ ought to be a subset of $D$). A trellis visualises this and the terms supremum and infimum are in order.\\
 
 \par\noindent As for the initial - and terminal object, they (trivially) correspond to the empty set and the set on which the category is based.
 
-\fakesection{Coequalizer}
+\fakesection{Co-equalizer}
 
-can you guess what coequalizer is?
+Visually : 
+
+\begin{center}
+\begin{tikzpicture}
+%\begin{scope}[yscale=1,xscale=-1]
+	\node at (0,6) (4) {$C$};
+	\node at (2,4) (2) {$A$};
+	\node at (-2,4) (3) {$B$};
+	\draw [<-] ([xshift=1mm]4.south) -- ([xshift=-2mm]2.north) node[midway,right,xshift=1mm] {$q$};
+	\draw [<-] ([xshift=-1mm]4.south) -- ([xshift=2mm]3.north) node[midway,left,xshift=-1mm] {$p$};
+	\draw [->] ([xshift=-2mm,yshift=1mm]2.west) -- ([xshift=1mm,yshift=1mm]3.east) node[midway,above,yshift=0mm] {$f$};
+	\draw [->] ([xshift=-2mm,yshift=-1mm]2.west) -- ([xshift=1mm,yshift=-1mm]3.east) node[midway,below,yshift=0mm] {$g$};
+%\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\noindent Once again $q$ is fully defined by $p$ and one of the morphisms from $B\rightarrow C$. We have 
+$$q = p\cdot f\qquad and\qquad q = p\cdot g\qquad \Rightarrow\qquad p\cdot f = p\cdot g$$
+where for every other co-equalizer $C'$ there should be a unique factoriser. Aside from this universal construction, there's a more concrete explanation of what it means in \texttt{Set}. There we end up with a partitioning of $B$ that corresponds to an equivalence relationship $f(x)\sim g(x)$. It should be the smallest of such relationships which corresponds to the finest partitioning
+\footnote{More concretely ; say $A=B=\{1,2,3\}$, $C=\{1,2\}$, $f=id$, $g(1)=2$, $g(2)=1$ and $g(3)=3$. Then we find a co-equalizer $p$ where $p(1)=p(2)=1$ and $p(3)=2$. This is a `\textit{better}' co-equalizer than $p'$ with $p'(x)=1$ because we find the factoriser $q$ ($q(x)=1$) for which $p'= q\cdot p$.}
+%.
 
 \fakesection{Pullback towards terminal object}
 
@@ -126,7 +146,7 @@ should be product (prove)
 
 \fakesection{Pushout from initial object}
 
-should be coproduct (prove)
+should be coproduct (proe)
 
 %\bibliographystyle{plain}
 %\bibliography{References}

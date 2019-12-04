@@ -64,7 +64,7 @@
 
 \fakesection{Pushout in \texttt{C++}}
 
-We talked about products and co-products in posets before, where the term supremum and infimum applied. In this more general case applied on \texttt{C++} types a diagram of a pushout $D$ is as follows :
+We talked about products and co-products in posets before, where the term supremum and infimum applied. In this more general case applied to \texttt{C++} types a diagram of a pushout $D$ is as follows :
 
 \begin{center}
 \begin{tikzpicture}
@@ -88,16 +88,16 @@ We talked about products and co-products in posets before, where the term suprem
 
 \fakesection{Limit of the identity functor}
 
-The identity functor \texttt{Id} maps a category to itself. The initial object is the object for which there's exactly one morphism to every object. When constructing the limit for \texttt{Id} any apex will correspond to an initial object (or there wouldn't be a natural transformation from $\Delta_c$ to \texttt{Id}). If there are many apexes (or initial objects) there will be unique transformations between them. Indeed, initial objects are unique up to isomorphism, which we knew already.
+The identity functor \texttt{Id} maps a category to itself. The initial object is the object for which there's exactly one morphism to every object. When constructing the limit for \texttt{Id} any apex will correspond to an initial object (or there wouldn't be a natural transformation from $\Delta_c$ to \texttt{Id}). If there are many apexes (or initial objects) there will be inversible transformations between them. Indeed, initial objects are unique up to isomorphism, which we knew already.
 
 \fakesection{Pullback, pushout, ... in \texttt{Set}}
 
-Starting from the diagram depicted on the previous page and applying analogous reasoning we can see that $D$ is the smallest superset or the union of $B$ and $C$. In the opposite category we get :
+Starting from the diagram depicted on the previous page and applying analogous reasoning we can see that a pushout $D$ is the smallest superset or the union of $B$ and $C$. In the opposite category we get :
 
 \begin{center}
 \begin{tikzpicture}
 %\begin{scope}[yscale=1,xscale=-1]
-	\node at (0,8) (1) {$E$};
+	\node at (0,7) (1) {$E$};
 	\node at (0,6) (4) {$D$};
 	\node at (2,4) (2) {$C$};
 	\node at (-2,4) (3) {$B$};
@@ -112,7 +112,7 @@ Starting from the diagram depicted on the previous page and applying analogous r
 \end{tikzpicture}
 \end{center}
 
-\noindent Here, the pullback $D$ is the largest subset or the intersection (every other set that's a subset of $B$ and $C$ ought to be a subset of $D$). A trellis visualises this and the terms supremum and infimum are in order.\\
+\noindent Here, the pullback $D$ is the largest subset or the intersection (every other set that's a subset of $B$ and $C$ ought to be a subset of $D$). A lattice visualises this and the terms supremum and infimum are in order.\\
 
 \par\noindent As for the initial - and terminal object, they (trivially) correspond to the empty set and the set on which the category is based.
 
@@ -134,19 +134,16 @@ Visually :
 \end{tikzpicture}
 \end{center}
 
-\noindent Once again $q$ is fully defined by $p$ and one of the morphisms from $B\rightarrow C$. We have 
+\noindent Once again $q$ is fully defined by $p$ and one of the morphisms from $A\rightarrow B$. We have 
 $$q = p\cdot f\qquad and\qquad q = p\cdot g\qquad \Rightarrow\qquad p\cdot f = p\cdot g$$
-where for every other co-equalizer $C'$ there should be a unique factoriser. Aside from this universal construction, there's a more concrete explanation of what it means in \texttt{Set}. There we end up with a partitioning of $B$ that corresponds to an equivalence relationship $f(x)\sim g(x)$. It should be the smallest of such relationships which corresponds to the finest partitioning
-\footnote{More concretely ; say $A=B=\{1,2,3\}$, $C=\{1,2\}$, $f=id$, $g(1)=2$, $g(2)=1$ and $g(3)=3$. Then we find a co-equalizer $p$ where $p(1)=p(2)=1$ and $p(3)=2$. This is a `\textit{better}' co-equalizer than $p'$ with $p'(x)=1$ because we find the factoriser $q$ ($q(x)=1$) for which $p'= q\cdot p$.}
+where for every other co-equalizer $C'$ there should be a unique factoriser. Aside from this universal construction, there's a more concrete explanation of what it means in \texttt{Set}. There we end up with a partitioning of $B$ that corresponds to an equivalence relationship $f(x)\sim g(x)$. It should be the smallest of such relationships which corresponds to the finest partitioning\footnote{An example ; let $A=B=\{1,2,3\}$, $f=id$, $g(1)=2$, $g(2)=1$ and $g(3)=3$. Then we find a co-equalizer $p$ where $p(1)=p(2)=[1]$ and $p(3)=[3]$. This is a `\textit{better}' co-equalizer than $p'$ with $p'(x)=[1]$ because we find the factoriser $h$ with $h(x)=[1]$ for which $p'= h\cdot p$.}.
 %.
 
-\fakesection{Pullback towards terminal object}
+\fakesection{Pullback towards terminal object, pushout from initial object}
 
-should be product (prove)
+A pullback is a special kind of product because $A$ imposes some additional structure. When you're dealing with $A$ as a terminal object and you're looking for a product, then that structure (morphisms to $A$ from $B$, $C$ and $D$) will necessarily be there. In other words, every such product is a pullback towards the terminal object (and vice versa, every such pullback is a product).\\
 
-\fakesection{Pushout from initial object}
-
-should be coproduct (proe)
+\par\noindent In the same vein, when you're dealing with $A$ as an initial object and are looking for a coproduct then there will be unique morphisms from $A$ to $B$, $C$ and $D$ which necessarily make it a pushout from the initial object.
 
 %\bibliographystyle{plain}
 %\bibliography{References}

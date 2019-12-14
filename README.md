@@ -4,4 +4,4 @@ Some solutions of the challenges in [Bartosz Milewski's book](/Category%20Theory
  - Session 2 : [Orders, Kleisli Categories, Products, Coproducts](/session_2/Homework.pdf)
  - Session 3 : [Algebraic Data Types, Functors](/session_3/Homework.pdf)
  - Session 4 : [Bifunctors, Functoriality, Natural Transformations](/session_4/Homework.pdf)
- - Session 5 : [?](/session_5/Homework.pdf)
+ - Session 5 : [Limits, Colimits, Equalizers, Co-Equalizers](/session_5/Homework.pdf)
